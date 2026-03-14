@@ -1,0 +1,13 @@
+# Virtual environment
+venv/
+env/
+*.egg-info/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Ignore Chroma DB folder
+chroma_db/
+
+.env
