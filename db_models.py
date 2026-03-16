@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, Text
+from sqlalchemy import Column, Date, ForeignKey, Integer, String, Text
 from database import Base
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
@@ -41,7 +41,7 @@ class BillingDetailsDb(Base):
     summary_of_rider_adjustments = Column(String(100))
     sales_tax = Column(String(100))
     total_charge = Column(String(100))
-    month = Column(String(20))
+    month = Column(Date)
 
     person_id = Column(Integer, ForeignKey("person_billing_details.id"))
     person = relationship("PersonBillingDetailsDb", back_populates="billings")

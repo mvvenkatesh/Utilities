@@ -1,3 +1,5 @@
+from datetime import date
+
 from pydantic import BaseModel
 
 
@@ -10,7 +12,7 @@ class BillingDetails(BaseModel):
     clean_energy_rider: float
     storm_recovery_charge: float
     summary_of_rider_adjustments: float
-    month: str
+    month: date
 
 class PersonBillingDetails(BaseModel):
     email: str
@@ -21,5 +23,8 @@ class PersonSignup(BaseModel):
     password: str
     role: str
     address: str
+
+class QuestionRequest(BaseModel):
+    question: str
 
 
