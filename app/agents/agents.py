@@ -3,7 +3,7 @@ import os
 from crewai import LLM, Agent
 from dotenv import load_dotenv
 
-from tools.tools import get_bill_history, get_charge_detail, get_current_bill, get_profile_info
+from app.tools.tools import get_bill_history, get_charge_detail, get_current_bill, get_profile_info
 
 load_dotenv()
 

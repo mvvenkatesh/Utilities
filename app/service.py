@@ -7,8 +7,7 @@ from reportlab.lib.pagesizes import letter
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-
-import db_models
+import app.db_models as db_models
 
 
 def calculate_energy_charge(details):

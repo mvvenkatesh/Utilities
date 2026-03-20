@@ -1,7 +1,7 @@
 from crewai.tools import tool
 from sqlalchemy.orm import Session
-from database import session 
-from db_models import Person, PersonBillingDetailsDb, BillingDetailsDb
+from app.database import session 
+from app.db_models import Person, PersonBillingDetailsDb, BillingDetailsDb
 import json
 
 def get_db_session() -> Session:

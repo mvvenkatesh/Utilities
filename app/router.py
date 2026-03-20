@@ -1,19 +1,17 @@
 from datetime import timedelta
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
-from sqlalchemy import asc, desc
+from sqlalchemy import desc
 from sqlalchemy.orm import selectinload
-from crew_local import run_billing_question
-from database import session, engine
-import db_models 
-from jwt_utils import create_access_token, get_current_user, require_role
-import models
-from password import hash_password, verify_password
-from service import calculate_energy_charge, create_pdf
+from app.crew_local import run_billing_question
+from app.database import session
+import app.db_models as db_models
+from app.jwt_utils import create_access_token, get_current_user, require_role
+import app.models as models
+from app.password import hash_password, verify_password
+from app.service import calculate_energy_charge, create_pdf
 
-app = FastAPI()
-
-db_models.Base.metadata.create_all(bind=engine)
+router = APIRouter()
 
 def get_db():
     db = session()
@@ -22,7 +20,7 @@ def get_db():
     finally:
         db.close()
 
-@app.post("/signup")
+@router.post("/signup")
 def signup(person: models.PersonSignup, db=Depends(get_db)):
     person_in_db = db.query(db_models.Person).filter(db_models.Person.email == person.email).first()
     if person_in_db:
@@ -33,7 +31,7 @@ def signup(person: models.PersonSignup, db=Depends(get_db)):
     db.commit()
     return {"message": "Person signed up successfully"}
 
-@app.post("/login")
+@router.post("/login")
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db=Depends(get_db)):
     person_in_db = db.query(db_models.Person).filter(db_models.Person.email == form_data.username).first()
     if not person_in_db or not verify_password(person_in_db.password, form_data.password):
@@ -44,11 +42,11 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db=Depends(get_db)):
     )
     return {"access_token": access_token, "token_type": "bearer"}
 
-@app.get("/user")
+@router.get("/user")
 def get_user(current_user: str = Depends(get_current_user)):
     return {"user": current_user}
 
-@app.post("/billing")
+@router.post("/billing")
 def billing(details: models.PersonBillingDetails, current_user: str = Depends(require_role("admin")), db=Depends(get_db)):
     person_in_db = db.query(db_models.Person).filter(db_models.Person.email == details.email).first()
     if not person_in_db:
@@ -74,7 +72,7 @@ def billing(details: models.PersonBillingDetails, current_user: str = Depends(re
     return {"person_billing_details": person_billing_details,
             "billing_details": billing_details_db}
 
-@app.get("/billing")
+@router.get("/billing")
 def get_billing_details(current_user: str = Depends(require_role("user")), db=Depends(get_db)):
     result = db.query(db_models.BillingDetailsDb)\
     .options(
@@ -91,7 +89,7 @@ def get_billing_details(current_user: str = Depends(require_role("user")), db=De
     
     return create_pdf(result)
 
-@app.post("/question")
+@router.post("/question")
 def ask_billing_question(body: models.QuestionRequest, current_user: str = Depends(require_role("user"))):
     if not body.question.strip():
         raise HTTPException(status_code=400, detail="Question cannot be empty")

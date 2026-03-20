@@ -1,11 +1,6 @@
 from sqlalchemy import Column, Date, ForeignKey, Integer, String, Text
-from database import Base
-from sqlalchemy import Column, Integer, String, ForeignKey
+from app.database import Base
 from sqlalchemy.orm import relationship
-from sqlalchemy.ext.declarative import declarative_base
-
-
-Base = declarative_base()
 
 class Person(Base):
     __tablename__ = "persons"

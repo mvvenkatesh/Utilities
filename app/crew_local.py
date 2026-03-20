@@ -1,5 +1,5 @@
-from agents.agents import billing_agent
-from tasks.tasks import run_billing_crew
+from app.agents.agents import billing_agent
+from app.tasks.tasks import run_billing_crew
 from crewai import Crew, Process
 
 

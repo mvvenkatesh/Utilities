@@ -1,5 +1,5 @@
 from crewai import Task
-from agents.agents import billing_agent
+from app.agents.agents import billing_agent
 
 def run_billing_crew(question: str, email: str) -> str:
     task = Task(
