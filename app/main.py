@@ -2,8 +2,8 @@ from datetime import timedelta
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy import asc, desc
-from sqlalchemy.orm import joinedload, selectinload
-from crew import run_billing_question
+from sqlalchemy.orm import selectinload
+from crew_local import run_billing_question
 from database import session, engine
 import db_models 
 from jwt_utils import create_access_token, get_current_user, require_role

@@ -1,6 +1,5 @@
 import io
 from fastapi.responses import StreamingResponse
-from numpy import indices
 from reportlab.platypus import Image, SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib import colors
